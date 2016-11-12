@@ -1,0 +1,40 @@
+	<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+	<h:form>
+		<h:panelGrid columns="2" cellpadding="5">
+			<p:outputLabel value="Category name" />
+			<p:inputText value="#{categoryController.newCategory.categoryName}"></p:inputText>
+			<p:commandButton value="Save"
+				action="#{categoryController.createCategory()}"></p:commandButton>
+			
+			<h:outputText value="#{categoryController.getCategories()}"/>
+			
+			 <p:outputLabel for="category" value="Categories:" />
+       		 <p:selectOneMenu id="category" value="#{productController.categoryName}" style="width:125px">
+       		  	<f:selectItem itemLabel="Select One" itemValue="" />
+	            <f:selectItems value="#{categoryController.itemCategories}" />
+       		 </p:selectOneMenu>
+       		 
+       		<p:outputLabel value="Product Name" />
+			<p:inputText value="#{productController.newProduct.productName}"></p:inputText>
+			<p:outputLabel value="Price" />
+			<p:inputText value="#{productController.newProduct.price}"></p:inputText>
+			<p:commandButton value="Save"
+				action="#{productController.createProduct()}"></p:commandButton>
+	
+			<h:outputText value="#{productController.getProducts()}"/>
+		
+			
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>
