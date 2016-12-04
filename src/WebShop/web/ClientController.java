@@ -15,9 +15,36 @@ import WebShop.model.Client;
 import WebShop.services.ClientService;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class ClientController implements Serializable {
+	private String regMessage;
+	private String checkPassword;
+	public String getCheckingPass() {
+		return checkPassword;
+	}
+
+	public void setCheckingPass(String checkingPass) {
+		this.checkPassword = checkingPass;
+	}
+
+	public String getRegMessage() {
+		return regMessage;
+	}
+
+	public void setRegMessage(String regMessage) {
+		this.regMessage = regMessage;
+	}
+
 	private Client current;
+	private Client newClient = new Client();
+	public Client getNewClient() {
+		return newClient;
+	}
+
+	public void setNewClient(Client newClient) {
+		this.newClient = newClient;
+	}
+
 	private DataModel<Client> items = null;
 	boolean editing = false;
 
@@ -78,6 +105,25 @@ public class ClientController implements Serializable {
 
 	public void setCurrent(Client current) {
 		this.current = current;
+	}
+	
+	public String registrateClient(){
+		if(!newClient.getPassword().equals(checkPassword)){
+			regMessage="Passwords do not match";
+			return null;
+		}
+		
+		
+		try {	
+			clientService.create(newClient);
+			regMessage = "Successfully created";
+		}
+		catch(Exception e){
+			regMessage = "Client already exists";
+		}
+		
+		return null;
+		//return FacesUtil.pageWithRedirect("index.xhtml");
 	}
 	
 	public String save() {

@@ -8,7 +8,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
   <head>
     <meta content="" />
@@ -22,6 +23,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <!--  Custom CSS -->
     <link href="css/shop-homepage.css" rel="stylesheet" />
+    <link href="css/registrate.css" rel="stylesheet" />
+
+      <link href="css/stylesheets/styles.css" rel="stylesheet"/>
     <!--  HTML5 Shim and Respond.js IE8 support of HTML5 elements and media
       queries -->
     <!--  WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,7 +35,7 @@
       src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif] -->
   </head>
-  <body>
+  <h:body>
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!--  Navigation -->
     <div class="container">
@@ -56,17 +60,21 @@
           </li>
         </ul>
        
-        
-       <form id="searchbox" action="">
-	    <input id="search" type="text" placeholder="Type here" />
-	    <input id="submit" type="submit" value="Search" />
-	    </form>
+      
+       <h:form id="searchbox">
+	    <h:inputText id="search" type="text" pt:placeholder="Type here" value="${productController.searchedName}"/>
+	    </h:form>
 	    
 	   <h:form id="authenticate" action="">
 	   <h:outputText value="${securityBean.userName}"  rendered="${not empty securityBean.userName}" />
 	   <h:commandLink action="#{securityBean.logout()}" value="Logout" immediate="true"  rendered="${not empty securityBean.userName}" />  
-	   <h:outputText value=""  rendered="${empty securityBean.userName}" /> 
+	   <h:commandButton value="My Basket"
+                     action="basket.xhtml?faces-redirect=true"
+                      rendered="${not empty securityBean.userName}">
+       		<f:setPropertyActionListener target="#{basketController.userName}" value="#{securityBean.userName}"/>
+       </h:commandButton>
 	  </h:form>
+	   
       </div>
       
       <!--  /.navbar-collapse -->
@@ -82,11 +90,17 @@
           </p>
           <div class="list-group">
            <ui:repeat value="#{categoryController.outCategories}" var="category">
-            <a href="#" class="list-group-item">
-            <h:outputText value="#{category.categoryName}" outcome="category"/></a>
+           
+           <h:form class="list-group-item">
+              <h:commandLink action="Man_fashion.xhtml?faces-redirect=true" 
+              		value="#{category.categoryName}" style="color:black;">
+               </h:commandLink>       
+            </h:form>
+           
            </ui:repeat>
           </div>
         </div>
+        
         <ui:insert name="page_content">Default Content</ui:insert>
         
       </div>
@@ -108,5 +122,5 @@
     xml:space="preserve"></script>
      <!--  Bootstrap Core JavaScript --> <script src="js/bootstrap.min.js"
     type="text/javascript" xml:space="preserve"></script>
-  </body>
+  </h:body>
 </html>

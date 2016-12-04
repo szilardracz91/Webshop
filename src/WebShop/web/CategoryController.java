@@ -75,7 +75,6 @@ public class CategoryController {
 			returnCategories += " " + category.getCategoryName();
 		return returnCategories;
 	}
-	
 
 	public String addProduct(){
 		categoryService.create(newCategory);

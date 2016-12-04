@@ -3,6 +3,7 @@ package WebShop.web;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;

@@ -3,6 +3,7 @@ package WebShop.services;
 import java.util.List;
 
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -13,6 +14,7 @@ import WebShop.model.Client;
 
 @Stateless
 @LocalBean
+@PermitAll
 @DeclareRoles({ Client.USER_ROLE, Client.ADMIN_ROLE })
 public class ClientService extends AbstractService<Client> {
 
@@ -43,14 +45,14 @@ public class ClientService extends AbstractService<Client> {
 		// TODO Auto-generated method stub
 		super.remove(entity);
 	}
-
+	@PermitAll
 	@RolesAllowed({Client.USER_ROLE, Client.ADMIN_ROLE})
 	@Override
 	public Client find(Object id) {
 		// TODO Auto-generated method stub
 		return super.find(id);
 	}
-
+	
 	@RolesAllowed({Client.USER_ROLE, Client.ADMIN_ROLE})
 	@Override
 	public List<Client> findAll() {
