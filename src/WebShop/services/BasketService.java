@@ -32,7 +32,7 @@ public class BasketService extends AbstractService<Basket> {
 	}
 	
 	public List<Basket> filterWithUser(String userName){
-		List<Basket> orders =  em.createQuery("SELECT b FROM Basket b WHERE b.clientId LIKE :user", Basket.class)
+		List<Basket> orders =  em.createQuery("SELECT b FROM Basket b WHERE b.client.name LIKE :user", Basket.class)
 				.setParameter("user", userName).getResultList();
 		return orders;
 	}

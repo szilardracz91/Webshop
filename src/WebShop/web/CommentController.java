@@ -19,12 +19,12 @@ import WebShop.services.ProductService;
 @ManagedBean
 @RequestScoped
 public class CommentController {
-	
-	private String clientName = new String(); 
+
+	private List<Comment> comments = new ArrayList<Comment>();
+	private String clientName = new String();
 	private int productId;
+	private String commentCount;
 	private String commentMessage = new String();
-	
-	
 
 	public String getClientName() {
 		return clientName;
@@ -41,7 +41,7 @@ public class CommentController {
 	public void setCommentMessage(String commentMessage) {
 		this.commentMessage = commentMessage;
 	}
-	
+
 	public int getProductId() {
 		return productId;
 	}
@@ -56,18 +56,42 @@ public class CommentController {
 	ProductService productService;
 	@EJB
 	ClientService clientService;
-	
-	public void insertComment(){
+
+	public void insertComment() {
 		System.out.println(productId);
 		System.out.println(clientName);
-		System.out.println("hahaha");
+		System.out.println(commentMessage);
 		Product product = productService.find(productId);
 		Client client = clientService.find(clientName);
 
 		Comment newComment = new Comment(client, product, commentMessage);
+
 		commentService.create(newComment);
 	}
 
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Comment> getCommentsByProduct() {
+		comments = commentService.findByProductId(productId);
+		return comments;
+	}
+
+	public String getCommentCount() {
+		comments = commentService.findByProductId(productId);
+		commentCount=""+comments.size()+" reviews";
+		return commentCount;
+	}
+
+	public void setCommentCount(String commentCount) {
+		this.commentCount = commentCount;
+	}
 
 	
+
 }

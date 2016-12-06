@@ -2,13 +2,14 @@ package WebShop.model;
 
 
 import java.io.Serializable;
-import javax.persistence.Id;
+
 import javax.persistence.*;
 
 @Entity
 public class Comment implements Serializable {
 
     @Id
+    @GeneratedValue
     private int id;
 
     @ManyToOne

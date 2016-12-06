@@ -71,7 +71,7 @@
 	   <h:commandButton value="My Basket"
                      action="basket.xhtml?faces-redirect=true"
                       rendered="${not empty securityBean.userName}">
-       		<f:setPropertyActionListener target="#{basketController.userName}" value="#{securityBean.userName}"/>
+       		<f:setPropertyActionListener target="#{basketController.clientName}" value="#{securityBean.userName}"/>
        </h:commandButton>
 	  </h:form>
 	   

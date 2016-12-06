@@ -9,14 +9,37 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 import WebShop.model.Basket;
+import WebShop.model.Client;
+import WebShop.model.Comment;
 import WebShop.model.Product;
 import WebShop.services.BasketService;
+import WebShop.services.ClientService;
 import WebShop.services.ProductService;
 
 @ManagedBean
 @SessionScoped
 public class BasketController {
 	
+	private String clientName = new String();
+	public String getClientName() {
+		return clientName;
+	}
+
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+
+	private int productId;
+	public int getProductId() {
+		return productId;
+	}
+
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
 	private Basket newOrder = new Basket(); 
 	private List<Basket> orders = null;
 	public List<Basket> getOrders() {
@@ -38,21 +61,13 @@ public class BasketController {
 		this.products = products;
 	}
 
-	private String userName = new String();
-	
-	public String getUserName() {
-		return userName;
-	}
-
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	@EJB
 	BasketService basketService;
 	@EJB
 	ProductService productService;
+	@EJB
+	ClientService clientService;
 	
 	public Basket getNewOrder() {
 		return newOrder;
@@ -65,14 +80,20 @@ public class BasketController {
 	
 	
 	public void putInBasket(){
+
+		Product product = productService.find(productId);
+		Client client = clientService.find(clientName);
+
+		newOrder = new Basket(client, product);
+
 		basketService.create(newOrder);
 	}
 	
 	public List<Product> getUserBasket(){	
 		products =  new ArrayList<Product>();
-		orders =  basketService.filterWithUser(userName);
+		orders =  basketService.filterWithUser(clientName);
 		for(Basket order : orders){
-			products.add(productService.find(order.getProductId()));
+			products.add(order.getProduct());
 		}
 		return products;
 		

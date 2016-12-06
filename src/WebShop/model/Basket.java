@@ -1,5 +1,6 @@
 package WebShop.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,37 +15,40 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Basket {
+public class Basket implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer orderId;
 	
-	private String clientId;
+	@ManyToOne
+    private Client client;
+
+    @ManyToOne
+    private Product product;
+    
+    public Basket(){}
+    
+    public Basket(Client client, Product product){
+    	this.client=client;
+    	this.product=product;
+    }
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
 	
-	private Integer productId;
-
-	public Integer getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
 	
 }
