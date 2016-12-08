@@ -13,18 +13,6 @@ public class Category {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	 
-	@OneToMany(mappedBy="category")
-	private List<Product> products = new ArrayList<Product>();
-	 
-	
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
 
 	private String categoryName;
 	
@@ -44,8 +32,8 @@ public class Category {
 		this.id = id;
 	}
 
-	public void addProduct(Product product){
+	/*public void addProduct(Product product){
 		product.setCategory(this);
 		this.products.add(product);
-	}
+	}*/
 }

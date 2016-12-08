@@ -8,14 +8,41 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/templates/common_template.xhtml">
 	<ui:define name="pageTitle">Webshop</ui:define>
 	<ui:define name="pageHeader">Webshop products</ui:define>
 	<ui:define name="page_content">
 		<div class="col-md-9">
+		
 			<link href="css/basket.css" rel="stylesheet" />
+			
+			<b style="font-size: 250%;">Previous orders:</b>
+			<ui:repeat value="#{orderController.orders}" var="order">
+				<h:panelGroup rendered="#{not empty orderController.orders}">
+					<h:panelGroup layout="block" style="#{orderController.setColour(order)}">
+						<b style="font-size: 175%;">
+							Products:</b>
+						<ul>
+							<ui:repeat value="#{order.products}" var="product">
+								<li><h:outputLabel value="#{product.productName}"></h:outputLabel></li>
+							</ui:repeat>
+						</ul>
+						State: <b> <h:outputText value="#{order.state}"/></b>
+					</h:panelGroup>
+
+					<br />
+
+				</h:panelGroup>
+			</ui:repeat>
+
+
+
+			<hr style="color: #3C74BD; background-color: #100E0E; height: 4px;" />
+
+			<b style="font-size: 250%;">Products in basket:</b>
 
 			<ui:repeat value="#{basketController.getUserBasket()}" var="product">
 
@@ -31,6 +58,7 @@
 					</p>
 
 				</div>
+
 
 				<br />
 				<div class="text-left">
@@ -57,20 +85,34 @@
 					</h:form>
 				</div>
 
-				<hr style="color: #3C74BD; background-color: #3C74BD; height: 2px;" />
+				<hr style="color: #3C74BD; background-color: #3C74BD; height: 1px;" />
 
 			</ui:repeat>
+
+			<div class="clearfix float-my-children">
+				<b style="color: red; font-size: 250%;">Total value: $</b>
+				<h:outputLabel value="#{basketController.totalPrice}"
+					style="font-weight:bold;color:red;  font-size: 250%;" />
+
+			</div>
+			<hr style="color: #3C74BD; background-color: #3C74BD; height: 1px;" />
 			<div class="clearfix float-my-children">
 				<h:form>
-					<h:commandButton style="margin:0px 10px 0px 10px; "
-						class="btn btn-primary" name="submit" value="Buy >>"
-						action="#{orderController.createNewOrder()}">
-						<f:setPropertyActionListener target="#{orderController.products}"
-							value="#{basketController.getUserBasket()}" />
-						<f:setPropertyActionListener
-							target="#{orderController.clientName}"
-							value="${securityBean.userName}" />
-					</h:commandButton>
+
+					<div class="inputs">
+						<h:inputText type="text" pt:placeholder="type your address here"
+							value="#{orderController.address}" />
+
+						<h:commandButton style="margin:0px 10px 0px 10px; "
+							class="btn btn-primary" name="submit" value="Buy >>"
+							action="#{orderController.createNewOrder()}">
+							<f:setPropertyActionListener target="#{orderController.products}"
+								value="#{basketController.getUserBasket()}" />
+							<f:setPropertyActionListener
+								target="#{orderController.clientName}"
+								value="${securityBean.userName}" />
+						</h:commandButton>
+					</div>
 				</h:form>
 			</div>
 		</div>

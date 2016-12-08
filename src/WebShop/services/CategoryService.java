@@ -79,5 +79,15 @@ public class CategoryService extends AbstractService<Category> {
 		 return em;
 	}
 	
+	public Category getCategoryWithName(String categoryName) {
+
+		Category category = em
+				.createQuery(
+						"SELECT c FROM Category c WHERE c.categoryName LIKE :catName",
+						Category.class).setParameter("catName", categoryName)
+				.getSingleResult();
+		return category;
+	}
+	
 	
 }

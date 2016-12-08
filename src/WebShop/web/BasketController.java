@@ -34,6 +34,17 @@ public class BasketController {
 	public int getProductId() {
 		return productId;
 	}
+	
+	private int totalPrice;
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 
 	public void setProductId(int productId) {
@@ -92,8 +103,10 @@ public class BasketController {
 	public List<Product> getUserBasket(){	
 		products =  new ArrayList<Product>();
 		orders =  basketService.filterWithUser(clientName);
+		totalPrice = 0;
 		for(Basket order : orders){
 			products.add(order.getProduct());
+			totalPrice+=order.getProduct().getPrice();
 		}
 		return products;
 		

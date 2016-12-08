@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="pageTitle">List Categories</ui:define>
+	<ui:define name="pageHeader">List Categories</ui:define>
+	<ui:define name="body">
+		<h:form>
+			<h:dataTable value="#{orderController.items}" var="item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Client Name" />
+					</f:facet>
+					<h:outputText value="#{item.client.name}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="address" />
+					</f:facet>
+					<h:outputText value="#{item.address}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="state" />
+					</f:facet>
+					<h:outputText value="#{item.state}" />
+				</h:column>
+				
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="&nbsp;" />
+					</f:facet>
+					<h:commandLink action="#{orderController.setUnderDelivery}"
+						value="Change state to under delivery" rendered="#{securityBean.admin}" />
+					<h:outputText value=" " />
+					<h:commandLink action="#{orderController.remove}" 
+						value="Remove" rendered="#{securityBean.admin}" />
+				</h:column>
+			</h:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

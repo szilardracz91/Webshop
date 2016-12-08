@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/templates/common_template.xhtml">
+	<ui:define name="pageTitle">Man fasion</ui:define>
+	<ui:define name="pageHeader">Webshop products</ui:define>
+	<ui:define name="page_content">
+		<div class="col-md-9">
+			
+
+			<div class="row">
+				<ui:repeat
+					value="#{productController.productsByCategory('Shoe')}"
+					var="product">
+					<div class="col-sm-4 col-lg-4 col-md-4">
+						<div class="thumbnail">
+							<img src="http://placehold.it/320x150" alt="" />
+							<div class="caption">
+								<h4 class="pull-right">
+									$
+									<h:outputText value="#{product.price}" />
+								</h4>
+								<h4>
+									<h:form>
+										<h:commandLink action="shop_item.xhtml"
+											value="#{product.productName}">
+											<f:setPropertyActionListener
+												target="#{productController.showProduct}" value="#{product}" />
+										</h:commandLink>
+									</h:form>
+								</h4>
+								<p>
+									<h:outputText value="#{product.description}" />
+								</p>
+							</div>
+							<div class="ratings">
+								<p class="pull-right">12 reviews</p>
+								<p>
+									<span class="glyphicon glyphicon-star"></span> <span
+										class="glyphicon glyphicon-star"></span> <span
+										class="glyphicon glyphicon-star"></span> <span
+										class="glyphicon glyphicon-star"></span> <span
+										class="glyphicon glyphicon-star-empty"></span>
+								</p>
+							</div>
+							<h:form>
+								<h:commandLink action="#{basketController.putInBasket()}"
+									value="put in Basket!">
+									<f:setPropertyActionListener
+										target="#{basketController.clientName}"
+										value="#{securityBean.userName}" />
+									<f:setPropertyActionListener
+										target="#{basketController.productId}" value="#{product.id}" />
+								</h:commandLink>
+							</h:form>
+						</div>
+					</div>
+				</ui:repeat>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+</html>

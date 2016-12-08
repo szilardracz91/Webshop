@@ -12,17 +12,28 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import WebShop.model.Category;
 import WebShop.model.Client;
 import WebShop.model.Product;
+import WebShop.services.CategoryService;
 import WebShop.services.ProductService;
 
 @ManagedBean
 @SessionScoped
-public class ProductController implements Serializable{
+@WebServlet("/newProduct")
+public class ProductController extends HttpServlet implements Serializable{
 	private Product newProduct = new Product();
 	private Product showProduct = new Product();
 	private String categoryName = new String();
@@ -33,6 +44,40 @@ public class ProductController implements Serializable{
 	public String getSearchedName() {
 		return searchedName;
 	}
+	
+	boolean editing = false;
+	
+	private Product current;
+	
+	public Product getCurrent() {
+		if (current == null)
+			current = new Product();
+		return current;
+	}
+
+	public void setCurrent(Product current) {
+		this.current = current;
+	}
+
+	public boolean isEditing() {
+		return editing;
+	}
+
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+	
+	private DataModel<Product> items = null;
+	
+	public DataModel<Product> getItems() {
+		if (items == null)
+			items = new ListDataModel<Product>(productService.findAll());
+		return items;
+	}
+	
+	public void setItems(DataModel<Product> items) {
+		this.items = items;
+	}
 
 	public void setSearchedName(String searchedName) {
 		this.searchedName = searchedName;
@@ -40,6 +85,8 @@ public class ProductController implements Serializable{
 
 	@EJB
 	ProductService productService;
+	@EJB
+	CategoryService categoryController;
 	
 	
 	  
@@ -59,11 +106,11 @@ public class ProductController implements Serializable{
 		this.newProduct = newProduct;
 	}
 	
-	public String createProduct(){
+	/*public String createProduct(){
 		productService.create(newProduct, categoryName);
 		newProduct = new Product();
 		return null;
-	}
+	}*/
 
 	public List<Product> getProducts() {
 		if(searchedName.isEmpty()){
@@ -95,6 +142,48 @@ public class ProductController implements Serializable{
 	public List<Product> productsByCategory(String categoryName){
 		products = productService.filterWithCategory(categoryName);
 		return products;
+	}
+	
+	public String prepareList() {
+		items = null;
+		return FacesUtil.pageWithRedirect("list_product.xhtml");
+	}
+	
+	public String prepareNew() {
+		editing = false;
+		current = null;
+		return FacesUtil.pageWithRedirect("edit_product.xhtml");
+	}
+
+	public String prepareEdit() {
+		editing = true;
+		current = getItems().getRowData();
+		return FacesUtil.pageWithRedirect("edit_product.xhtml");
+	}
+	
+	public String save() {
+		Category cat = categoryController.getCategoryWithName(categoryName);
+		current.setCategory(cat);
+		if (editing){
+			productService.edit(current);
+		}
+		else{
+			productService.create(current);
+		}
+		FacesUtil.addInfoMessage("Entity successfully saved");
+		items = null;
+		current = null;
+
+		return FacesUtil.pageWithRedirect("list_product.xhtml");
+	}
+	
+	public String remove() {
+		productService.remove(getItems().getRowData());
+
+		FacesUtil.addInfoMessage("Entity successfully removed");
+
+		items = new ListDataModel<Product>(productService.findAll());
+		return FacesUtil.pageWithRedirect("list_product.xhtml");
 	}
 
 }

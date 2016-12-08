@@ -37,4 +37,14 @@ public class BasketService extends AbstractService<Basket> {
 		return orders;
 	}
 	
+	public void deleteProdocuts(String userName){
+		List<Basket> baskets = em.createQuery("SELECT b FROM Basket b WHERE b.client.name LIKE :user", Basket.class)
+		.setParameter("user", userName).getResultList();
+		
+		for(Basket basket: baskets){
+			em.remove(basket);
+		}
+		
+	}
+	
 }

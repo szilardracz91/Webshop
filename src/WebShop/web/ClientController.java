@@ -15,7 +15,7 @@ import WebShop.model.Client;
 import WebShop.services.ClientService;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class ClientController implements Serializable {
 	private String regMessage;
 	private String checkPassword;
@@ -65,19 +65,19 @@ public class ClientController implements Serializable {
 		FacesUtil.addInfoMessage("Entity successfully removed");
 
 		items = new ListDataModel<Client>(clientService.findAll());
-		return FacesUtil.pageWithRedirect("list.xhtml");
+		return FacesUtil.pageWithRedirect("list_client.xhtml");
 	}
 	
 	public String prepareNew() {
 		editing = false;
 		current = null;
-		return FacesUtil.pageWithRedirect("edit.xhtml");
+		return FacesUtil.pageWithRedirect("edit_client.xhtml");
 	}
 
 	public String prepareEdit() {
 		editing = true;
 		current = getItems().getRowData();
-		return FacesUtil.pageWithRedirect("edit.xhtml");
+		return FacesUtil.pageWithRedirect("edit_client.xhtml");
 	}
 
 
@@ -94,7 +94,7 @@ public class ClientController implements Serializable {
 
 	public String prepareList() {
 		items = null;
-		return FacesUtil.pageWithRedirect("list.xhtml");
+		return FacesUtil.pageWithRedirect("list_client.xhtml");
 	}
 
 	public Client getCurrent() {
@@ -127,6 +127,7 @@ public class ClientController implements Serializable {
 	}
 	
 	public String save() {
+		System.out.println(editing);
 		if (editing)
 			clientService.edit(current);
 		else
@@ -135,7 +136,7 @@ public class ClientController implements Serializable {
 		items = null;
 		current = null;
 
-		return FacesUtil.pageWithRedirect("list.xhtml");
+		return FacesUtil.pageWithRedirect("list_client.xhtml");
 	}
 
 }
